@@ -6,6 +6,10 @@ export interface SyncAmountsToBaseAction extends Action {
   readonly type: typeof ExchangeActionType.SyncAmountsToBase;
 }
 
+export interface SaveStateToQueryParamsAction extends Action {
+  readonly type: typeof ExchangeActionType.SaveStateToQueryParams;
+}
+
 export interface ChangeCurrencyAmountAction extends Action {
   readonly type: typeof ExchangeActionType.ChangeCurrencyAmount;
   currency: Currency;
@@ -30,6 +34,7 @@ export interface RemoveCurrencyAction extends Action {
 
 export type ExchangeAction =
   | SyncAmountsToBaseAction
+  | SaveStateToQueryParamsAction
   | ChangeCurrencyAction
   | ChangeCurrencyAmountAction
   | AddCurrencyAction

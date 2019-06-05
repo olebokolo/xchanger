@@ -40,8 +40,8 @@ export const ExchangePanel: React.FC<IExchangePanelProps> = (
 ) => {
 
   useEffect(() => {
-    const base = initBase || Currency.GBP
-    const amount = initAmount || 100
+    const base = _.isNil(initBase) ? Currency.GBP : initBase
+    const amount = _.isNil(initAmount) ? 100 : initAmount
 
     addCurrency(base)
     loadLatestRatesForBase(base)

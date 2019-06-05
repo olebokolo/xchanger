@@ -3,6 +3,7 @@ import {
   ChangeCurrencyAction,
   ChangeCurrencyAmountAction,
   RemoveCurrencyAction,
+  SaveStateToQueryParamsAction,
   SyncAmountsToBaseAction
 } from './exchange.actions.interfaces'
 import { Currency } from './currency/currency'
@@ -14,6 +15,8 @@ export enum ExchangeActionType {
   RemoveCurrency = '[Exchange] remove currency',
   ChangeCurrency = '[Exchange] change currency',
   ChangeCurrencyAmount = '[Exchange] change currency amount',
+
+  SaveStateToQueryParams = '[Exchange] save state to query params'
 }
 
 export const syncAmountsToBase = (): SyncAmountsToBaseAction => ({
@@ -38,4 +41,8 @@ export const changeCurrency = (prev: Currency, next: Currency): ChangeCurrencyAc
 export const changeCurrencyAmount = (currency: Currency, amount: number): ChangeCurrencyAmountAction => ({
   type: ExchangeActionType.ChangeCurrencyAmount,
   currency, amount,
+})
+
+export const saveStateToQueryParams = (): SaveStateToQueryParamsAction => ({
+  type: ExchangeActionType.SaveStateToQueryParams,
 })

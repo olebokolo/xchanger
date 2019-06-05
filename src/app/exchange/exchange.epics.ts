@@ -1,11 +1,20 @@
+import _ from 'lodash'
 import { ActionsObservable, Epic, StateObservable } from 'redux-observable'
 import { IAppState } from '../app.reducer'
 import { filter, map, switchMap, withLatestFrom } from 'rxjs/operators'
-import { ExchangeActionType, syncAmountsToBase } from './exchange.actions'
-import { ChangeCurrencyAction, ExchangeAction, RemoveCurrencyAction } from './exchange.actions.interfaces'
+import { ExchangeActionType, saveStateToQueryParams, syncAmountsToBase } from './exchange.actions'
+import {
+  ChangeCurrencyAction,
+  ExchangeAction,
+  RemoveCurrencyAction,
+  SaveStateToQueryParamsAction
+} from './exchange.actions.interfaces'
 import { baseChanged, loadLatestRatesForBase, RatesActionType } from './rates/rates.actions'
 import { RatesAction } from './rates/rates.actions.interfaces'
 import { Currency } from './currency/currency'
+import { history } from '../app.router'
+import { EMPTY } from 'rxjs'
+import { stringify } from 'query-string'
 
 export const syncAmountsAfterLatestRatesLoadedEpic: Epic = (action$: ActionsObservable<RatesAction>, state$: StateObservable<IAppState>) =>
   action$.pipe(
@@ -31,3 +40,36 @@ export const baseCurrencyRemovedEpic: Epic = (action$: ActionsObservable<Exchang
       return [ baseChanged(nextBase), loadLatestRatesForBase(nextBase) ]
     })
   )
+
+export const savingStateToQueryParamsTriggerEpic: Epic = (action$: ActionsObservable<ExchangeAction>) =>
+  action$.pipe(
+    filter(action => [
+      ExchangeActionType.AddCurrency,
+      ExchangeActionType.RemoveCurrency,
+      ExchangeActionType.ChangeCurrency,
+      ExchangeActionType.ChangeCurrencyAmount,
+    ].includes(action.type)),
+    switchMap(() => [ saveStateToQueryParams() ])
+  )
+
+export const saveExchangeStateToQueryParamsEpic: Epic = (action$: ActionsObservable<ExchangeAction>, state$: StateObservable<IAppState>) =>
+  action$.pipe(
+    filter(action => action.type === ExchangeActionType.SaveStateToQueryParams),
+    withLatestFrom(state$),
+    switchMap(([ , state ]: [ SaveStateToQueryParamsAction, IAppState ]) => {
+      const base = state.exchange.rates.base
+      const baseItem = state.exchange.items.filter(item => item.currency === base).find(() => true)
+      const items = state.exchange.items.filter(item => item.currency !== base)
+
+      const from = _.toLower(base)
+      const to = items.map(item => item.currency).map(_.toLower)
+      const amount = baseItem && baseItem.amount
+
+      if (!_.isNil(from) && !_.isNil(to) && !_.isNil(amount)) {
+        history.push({ search: stringify({ from, to, amount }) })
+      }
+
+      return EMPTY
+    })
+  )
+

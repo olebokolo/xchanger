@@ -7,17 +7,23 @@ import { IAppState } from '../app.reducer'
 import { parse } from 'query-string'
 import { Currency, isValidCurrency } from '../exchange/currency/currency'
 
-function extractInitExchangeParams(queryParams: { amount: number, from: Currency, to: Currency[] }) {
-  const rawAmount = _.toNumber(queryParams.amount)
+interface IExchangeInitQueryParams {
+  amount: number;
+  from: Currency;
+  to: Currency[];
+}
+
+function extractInitExchangeParams(queryParams: IExchangeInitQueryParams) {
+  const rawAmount = queryParams.amount && _.toNumber(queryParams.amount)
   const rawBase = _.toUpper(queryParams.from) as Currency
 
   const initAmount = _.isNumber(rawAmount) ? rawAmount : undefined
   const initBase = isValidCurrency(rawBase) ? rawBase : undefined
-  const initCurrencies = queryParams.to.map(_.toUpper).filter(isValidCurrency) as Currency[]
+  const initCurrencies = _.castArray(queryParams.to).map(_.toUpper).filter(isValidCurrency) as Currency[]
   return { initAmount, initBase, initCurrencies }
 }
 
-export const DashboardPage: React.FC<any> = ({ queryParams }) => (
+export const DashboardPage: React.FC<{queryParams: IExchangeInitQueryParams}> = ({ queryParams }) => (
   <div>
     <ExchangePanel
       {...extractInitExchangeParams(queryParams)}
@@ -26,7 +32,7 @@ export const DashboardPage: React.FC<any> = ({ queryParams }) => (
 )
 
 const mapStateToProps = (state: IAppState, props: RouteProps) => ({
-  queryParams: parse(_.get(props, `location.search`))
+  queryParams: parse(_.get(props, `location.search`)) as any
 })
 
 export default connect(mapStateToProps)(DashboardPage)

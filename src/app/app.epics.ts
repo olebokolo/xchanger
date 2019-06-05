@@ -1,19 +1,12 @@
+import _ from 'lodash'
 import { combineEpics } from 'redux-observable'
 import { latestRatesForBaseEpic } from './exchange/rates/rates.epics'
-import {
-  baseCurrencyChangedEpic,
-  baseCurrencyRemovedEpic,
-  syncAmountsAfterLatestRatesLoadedEpic
-} from './exchange/exchange.epics'
+import * as exchangeEpics from './exchange/exchange.epics'
 
 const appEpics = combineEpics(
-  /* rates */
   latestRatesForBaseEpic,
 
-  /* exchange */
-  baseCurrencyChangedEpic,
-  baseCurrencyRemovedEpic,
-  syncAmountsAfterLatestRatesLoadedEpic,
+  ..._.values(exchangeEpics)
 )
 
 export default appEpics
