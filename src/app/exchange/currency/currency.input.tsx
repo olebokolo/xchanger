@@ -9,10 +9,7 @@ interface ICurrencyInputProps {
   onChange?: (value: number | null) => any;
 }
 
-export const CurrencyInput: React.FC<ICurrencyInputProps> = (
-  { name, value, onChange }
-) => {
-
+export const CurrencyInput: React.FC<ICurrencyInputProps> = ({ name, value, onChange }) => {
   const [ amount, setAmount ] = useState(``)
 
   useEffect(() => {
@@ -21,22 +18,17 @@ export const CurrencyInput: React.FC<ICurrencyInputProps> = (
     } else {
       setAmount(cutDigitsAfterDot(value + ``, 5))
     }
-  }, [value])
+  }, [ value ])
 
   const isEmptyOrNumberWithLessThan5DigitsAfterDot = (value: string): boolean => {
     return !value || isNumberWithLessThanXDigitsAfterDot(value, 5)
   }
 
   const onAmountChange = (value: string) => {
-    console.log(`onAmountChange '${value}'`)
     const _value = cutDigitsAfterDot(value, 5)
     if (isEmptyOrNumberWithLessThan5DigitsAfterDot(_value)) {
       setAmount(_value)
-      const value1 = _.isEmpty(_value) ? null : _.toNumber(_value)
-
-      console.log(`value1`, value1, `_value`, _value)
-
-      onChange && onChange(value1)
+      onChange && onChange(_.isEmpty(_value) ? null : _.toNumber(_value))
     }
   }
 

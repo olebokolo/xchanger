@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import * as React from 'react'
 import { useEffect } from 'react'
 import { ExchangeContext } from './exchange.context'
@@ -8,7 +9,6 @@ import { IAppState } from '../app.reducer'
 import { Currency } from './currency/currency'
 import { getUnselectedCurrencies } from './currency/currency.selectors'
 import { ExchangeList } from './exchange.list'
-import * as _ from 'lodash'
 import { addCurrency, changeCurrency, changeCurrencyAmount, removeCurrency } from './exchange.actions'
 import { IExchangeItem } from './exchange.reducer'
 
@@ -43,11 +43,14 @@ export const ExchangePanel: React.FC<IExchangePanelProps> = (
     const base = initBase || Currency.GBP
     const amount = initAmount || 100
 
+    addCurrency(base)
     loadLatestRatesForBase(base)
 
-    if (_.isEmpty(initCurrencies)) {
-      addCurrency(base)
+    const currenciesToAdd = _(initCurrencies).filter(currency => currency !== base).uniq().valueOf()
+    if (_.isEmpty(currenciesToAdd)) {
       addCurrency(base === Currency.GBP ? Currency.PLN : Currency.GBP)
+    } else {
+      currenciesToAdd.forEach(addCurrency)
     }
 
     changeCurrencyAmount(base, amount)

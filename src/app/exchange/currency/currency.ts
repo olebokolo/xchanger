@@ -37,3 +37,4 @@ export enum Currency {
 }
 
 export const allCurrencies = enumToArray<Currency>(Currency).sort()
+export const isValidCurrency = (value: Currency) => allCurrencies.includes(value)

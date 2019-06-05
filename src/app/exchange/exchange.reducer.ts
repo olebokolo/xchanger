@@ -64,9 +64,9 @@ export default (state = initialState, action: ExchangeAction | RatesAction) => {
 
     case ExchangeActionType.AddCurrency:
       return {
-        ...state, items: [
-          ...state.items, { currency: action.currency, amount: exchangeBaseAmountTo(action.currency) }
-        ]
+        ...state, items: state.items.find(item => item.currency === action.currency)
+          ? state.items
+          : [ ...state.items, { currency: action.currency, amount: exchangeBaseAmountTo(action.currency) } ]
       }
 
     case ExchangeActionType.RemoveCurrency:
