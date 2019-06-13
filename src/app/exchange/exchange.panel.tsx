@@ -55,7 +55,7 @@ export const ExchangePanel: React.FC<IExchangePanelProps> = (
 
     changeCurrencyAmount(base, amount)
 
-  }, [])
+  }, [addCurrency, changeCurrencyAmount, initAmount, initBase, initCurrencies, loadLatestRatesForBase])
 
   const addAnotherCurrency = () => {
     if (!_.isEmpty(unselectedCurrencies)) {
