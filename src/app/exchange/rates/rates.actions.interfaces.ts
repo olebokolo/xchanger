@@ -1,7 +1,7 @@
-import { IRatesMap } from './rates.interfaces'
-import { RatesActionType } from './rates.actions'
-import { Currency } from '../currency/currency'
-import { Action } from 'redux'
+import { IRatesMap } from './rates.interfaces';
+import { RatesActionType } from './rates.actions';
+import { Currency } from '../currency/currency';
+import { Action } from 'redux';
 
 export interface BaseChangedAction extends Action {
   readonly type: typeof RatesActionType.BaseChanged;

@@ -1,6 +1,6 @@
-import * as React from 'react'
-import { Currency } from './currency'
-import _ from 'lodash'
+import * as React from 'react';
+import { Currency } from './currency';
+import _ from 'lodash';
 
 interface ICurrencySelectProps {
   name: string;
@@ -10,7 +10,7 @@ interface ICurrencySelectProps {
 }
 
 export const CurrencySelect: React.FC<ICurrencySelectProps> = (
-  { name, value, options, onChange }
+  {name, value, options, onChange}
 ) => {
   return (
     <select
@@ -20,7 +20,7 @@ export const CurrencySelect: React.FC<ICurrencySelectProps> = (
       onChange={e => onChange(e.target.value as Currency)}
     >
       {
-        _.union(options, [ value ]).map(currency =>
+        _.union(options, [value]).map(currency =>
           <option
             key={currency}
             value={currency}
@@ -31,5 +31,5 @@ export const CurrencySelect: React.FC<ICurrencySelectProps> = (
         )
       }
     </select>
-  )
-}
+  );
+};

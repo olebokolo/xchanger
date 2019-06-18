@@ -1,6 +1,6 @@
-import { Action } from 'redux'
-import { Currency } from './currency/currency'
-import { ExchangeActionType } from './exchange.actions'
+import { Action } from 'redux';
+import { Currency } from './currency/currency';
+import { ExchangeActionType } from './exchange.actions';
 
 export interface SyncAmountsToBaseAction extends Action {
   readonly type: typeof ExchangeActionType.SyncAmountsToBase;

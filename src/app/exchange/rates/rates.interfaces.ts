@@ -1,3 +1,3 @@
 export interface IRatesMap {
-  [ rate: string ]: number;
+  [rate: string]: number;
 }

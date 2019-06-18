@@ -1,4 +1,4 @@
-import { enumToArray } from '../../utils/array.utils'
+import { enumToArray } from '../../utils/array.utils';
 
 export enum Currency {
   EUR = 'EUR',
@@ -36,5 +36,5 @@ export enum Currency {
   SEK = 'SEK',
 }
 
-export const allCurrencies = enumToArray<Currency>(Currency).sort()
-export const isValidCurrency = (value: Currency) => allCurrencies.includes(value)
+export const allCurrencies = enumToArray<Currency>(Currency).sort();
+export const isValidCurrency = (value: Currency) => allCurrencies.includes(value);

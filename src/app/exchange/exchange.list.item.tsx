@@ -1,10 +1,10 @@
-import * as _ from 'lodash'
-import { CurrencySelect } from './currency/currency.select'
-import * as React from 'react'
-import { useContext } from 'react'
-import { Currency } from './currency/currency'
-import { CurrencyInput } from './currency/currency.input'
-import { ExchangeContext } from './exchange.context'
+import * as _ from 'lodash';
+import { CurrencySelect } from './currency/currency.select';
+import * as React from 'react';
+import { useContext } from 'react';
+import { Currency } from './currency/currency';
+import { CurrencyInput } from './currency/currency.input';
+import { ExchangeContext } from './exchange.context';
 
 interface IExchangeListItemProps {
   index: number
@@ -23,7 +23,7 @@ export const ExchangeListItem: React.FC<IExchangeListItemProps> = (
     onAmountChange, onCurrencyChange, onRemove
   }
 ) => {
-  const { unselectedCurrencies } = useContext(ExchangeContext)
+  const {unselectedCurrencies} = useContext(ExchangeContext);
   return (
     <div key={`currency-row-${index}`}>
       <CurrencyInput
@@ -39,5 +39,5 @@ export const ExchangeListItem: React.FC<IExchangeListItemProps> = (
       />
       <button disabled={!canRemove} onClick={onRemove}>x</button>
     </div>
-  )
-}
+  );
+};
